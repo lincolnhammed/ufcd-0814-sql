@@ -114,10 +114,75 @@ insert into formando values(3,"pedro","18", default);
 select * from formando;
 ######################################################################################################################################### 
 
+# primary key (PK) - permite a exclusividade do registro, e promove a relacao
+# entre tabela (ou entre campos de tabelas diferentes)
+drop table if exists modalidades;
+drop table if exists socio;
 
+create table socio(
+id_socio int primary key,
+nome varchar (50),
+idade int
+);
+insert into socio values(1,"pedro",25),(2,"ana",25);
 
+# foreign key - permite a ligacao de um campo de uma tabela B, com um campo de uma tabela A que tem PK
+create table modalidades(
+id_modalidade int primary key,
+nome varchar(50),
+id_socio int,
+foreign key(id_socio) references socio(id_socio)
 
+);
+insert into modalidades values (1,"spinning",1),(2,"spinning",2);
+##################################################################################################################################################
 
+# pk - fk entre 3 tabelas 
+set foreign_key_checks=0; -- desativa as ligacoes do fk de chaves estrangeiras tabelas relacionadas 
+drop table if exists utilizador;
+create table utilizador (
+user_id int primary key,
+nome varchar (50),
+email varchar (50)
+); 
+insert into utilizador values(1,"pedro", "pedro@gmail.com");
 
+drop table if exists encomendas;
+create table encomendas(
+encomendas_id int primary key,
+user_id int,
+data_encomenda date,
+foreign key (user_id) references utilizador(user_id)
+);
+insert into encomendas values (1, 1,"2026-12-01");
 
+drop table if exists produtos;
+create table produtos(
+produtos_id int primary key,
+encomendas_id int,
+quantidade int,
+nome_produto varchar(50),
 
+foreign key(encomendas_id) references encomendas(encomendas_id)
+
+);
+
+insert into produtos values (1,1,10,"monitores");
+set foreign_key_checks=1; -- ativa as chaves estrangeiras e nao apaga mas sem uma sequencia
+select * from utilizador;
+select * from encomendas;
+select * from produtos;
+####################################################################################################################################################
+
+-- auto-increment - vai inserir de forma automatica e sequencial uma numeracao
+
+drop table if exists automovel;
+create table automovel(
+id_automovel int auto_increment primary key,
+marca varchar(50),
+modelo varchar(50)
+);
+
+insert into automovel values(default, "VW","golfe"),(default, "audi","a4"),(default, "BMW","320d");
+
+select * from automovel;
